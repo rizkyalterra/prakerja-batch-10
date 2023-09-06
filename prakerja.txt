@@ -1,4 +1,7 @@
 ini perubahan dari jenis remote
 ini perubahan ke dua dari jenis remote
 ini perubahan dari jenis clone
+ini jadinya gabungan deh
 ini conflict dari jenis clone
+ini conflict dari remote
+
