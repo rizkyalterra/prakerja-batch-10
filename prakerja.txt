@@ -1,4 +1,4 @@
-ini branch develop
+ini branch featureA dan develop
 ini perubahan dari jenis remote
 ini perubahan ke dua dari jenis remote
 ini perubahan dari jenis clone
