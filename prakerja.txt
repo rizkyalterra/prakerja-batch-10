@@ -1,4 +1,0 @@
-ini perubahan dari jenis remote
-ini perubahan ke dua dari jenis remote
-ini perubahan dari jenis clone
-ini conflict dari remote
