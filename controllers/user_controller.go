@@ -1,15 +1,18 @@
 package controllers
 
 import (
+	"errors"
 	"fmt"
 	"net/http"
 	"prakerja10/configs"
 	userbase "prakerja10/models/base"
 	userdatabase "prakerja10/models/user/database"
 	userrequest "prakerja10/models/user/request"
+	"prakerja10/models/user/response"
 	userresponse "prakerja10/models/user/response"
 
 	"github.com/labstack/echo/v4"
+	"gorm.io/gorm"
 )
 
 func AddUsersController(c echo.Context) error {
@@ -59,18 +62,29 @@ func LoginController(c echo.Context) error {
 	var userDatabase userdatabase.User
 	userDatabase.MapFromLogin(userLogin)
 
-	if userDatabase.Email == "alterra@gmail.com" && userDatabase.Password == "123ABC" {
-		return c.JSON(http.StatusOK, userbase.BaseRespose{
-			Status: true,
-			Message: "Success login",
-			Data: userLogin,
+
+	result := configs.DB.
+		Where("email = ? AND password = ?", 
+			userDatabase.Email,
+			userDatabase.Password).First(&userDatabase)
+
+	if errors.Is(result.Error, gorm.ErrRecordNotFound)  {
+		return c.JSON(http.StatusUnauthorized, userbase.BaseRespose{
+			Status: false,
+			Message: "Failed login check email and password",
+			Data: nil,
 		})
-	} 
-	return c.JSON(http.StatusUnauthorized, userbase.BaseRespose{
-		Status: false,
-		Message: "Failed login",
-		Data: nil,
+	}
+
+	var userResponse response.UserResponse
+	userResponse.MapFromDatabase(userDatabase)
+
+	return c.JSON(http.StatusOK, userbase.BaseRespose{
+		Status: true,
+		Message: "Success login",
+		Data: userResponse,
 	})
+	
 }
 
 func GetUsersController(c echo.Context) error {

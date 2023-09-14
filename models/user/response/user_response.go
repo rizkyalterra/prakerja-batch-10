@@ -1,6 +1,9 @@
 package response
 
-import "prakerja10/models/user/database"
+import (
+	"prakerja10/middlewares"
+	"prakerja10/models/user/database"
+)
 
 type UserResponse struct {
 	Id int 			`json:"id" gorm:"primaryKey autoIncrement"`
@@ -13,5 +16,5 @@ func (userResponse *UserResponse) MapFromDatabase(userDatabase database.User) {
 	userResponse.Id = userDatabase.Id
 	userResponse.Name = userDatabase.Name
 	userResponse.Email = userDatabase.Email
-	userResponse.Token = ""
+	userResponse.Token = middlewares.GenerateJWT(userDatabase)
 }
