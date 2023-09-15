@@ -1,6 +1,7 @@
 package middlewares
 
 import (
+	"os"
 	"prakerja10/models/user/database"
 	"time"
 
@@ -25,7 +26,7 @@ func GenerateJWT(user database.User) string {
 
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
 
-	t, _ := token.SignedString([]byte("123"))
+	t, _ := token.SignedString([]byte(os.Getenv("PRIVATE_KEY_JWT")))
 	
 	return t
 }
